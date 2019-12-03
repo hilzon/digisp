@@ -1,0 +1,13 @@
+let data_array = ['fahmi','vedo','aidhiel']
+console.log(data_array[1])
+let data_object = {nama:'fahmi'},{nama:'vedo'},{nama:'aidhiel'}
+console.log(data_object.nama)
+data_object.forEach(data => {
+	if(data.nama == "vedo") {
+		console.log(data.nama)
+	}else {
+		console.log('err')
+	}
+})A
+
+
