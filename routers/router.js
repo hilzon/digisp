@@ -9,7 +9,7 @@ const newsController = require('../controllers/newsController');
 const kontakController = require('../controllers/kontakController');
 const userController = require('../controllers/userController');
 const adminController = require('../controllers/adminController');
-const middleware = require('../middlewares/middleware');
+// const middleware = require('../middlewares/middleware');
 const verifyToken = require('../middlewares/auth');
 
 module.exports = app => {
@@ -76,10 +76,10 @@ app.put('/api/user/:id', userController.ubahUser)
 app.delete('/api/user/:id', userController.hapusUser)
 
 
-// API adminlogin
-  app.post('/api/register', middleware.postRegister)
-  app.get('/api/login', middleware.postLogin)
-  app.post('/api/login', middleware.postLogin)
+// // API adminlogin
+//   app.post('/api/register', middleware.postRegister)
+//   app.get('/api/login', middleware.postLogin)
+//   app.post('/api/login', middleware.postLogin)
 };
  
 
