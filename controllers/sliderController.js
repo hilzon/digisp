@@ -12,7 +12,7 @@ const path = require('path')
   exports.tambahSlider = async (req, res) => {
     if (req.files) {
         let pic = req.files.image_slider
-        let lokasi = `./public/image/${pic.name}`
+        let lokasi = `./public/image/slider/${pic.name}`
         pic.mv(lokasi, async (error) => {
           if (error) {
             console.log('err')
