@@ -175,6 +175,7 @@ exports.tambahUser = async (req, res) => {
             nama_user: req.body.nama_user,
             email_user: req.body.email_user,
             password_user: pw,
+            hp_user: req.body.hp_user,
             alamat_user: req.body.nama_user,
             tagihan_user: req.body.tagihan_user,
             image_user: pic.name,
@@ -191,7 +192,7 @@ exports.tambahUser = async (req, res) => {
 } 
 
 exports.ubahUser = async (req, res) => {
-  const { email_user } = req.params
+  const { id } = req.params
   if(req.files){
     let pic = req.files.image_user
     let path = `./public/image/user/${ pic.name }`
@@ -199,20 +200,20 @@ exports.ubahUser = async (req, res) => {
     pic.mv(path, async (err) => {
       if (!err){
         req.body.image_user = pic.name
-        const status = await User.update({_id: email_user}, req.body)
+        const status = await User.update({_id: id}, req.body)
         res.send(JSON.stringify({"status": 200, "error": null, "response": status}));
       } else{
         console.log(err)
       }
     })
   } else{
-    const status = await User.update({_id: email_user}, req.body)
+    const status = await User.update({_id: id}, req.body)
         res.send(JSON.stringify({"status": 200, "error": null, "response": status}));
   }
 }
   
   exports.hapusUser = async (req,res) => {
-    const { email_user } = req.params;
+    const { id } = req.params;
     if(req.files){
       let pic = req.files.image_user
       let path = `./public/image/user/${ pic.name }`
@@ -220,17 +221,17 @@ exports.ubahUser = async (req, res) => {
       pic.mv(path, async (err) => {
         if (!err){
           req.body.image_user = pic.name
-          const status = await User.remove({_id: email_user}, req.body)
+          const status = await User.remove({_id: id}, req.body)
           res.send(JSON.stringify({"status": 200, "error": null, "response": status}));
         } else{
           console.log(err)
         }
       })
     } else{
-      const status = await User.remove({_id: email_user}, req.body)
+      const status = await User.remove({_id: id}, req.body)
           res.send(JSON.stringify({"status": 200, "error": null, "response": status}));
     }
 
-    const status = await User.remove({_id: email_user});
+    const status = await User.remove({_id: id});
         res.send(JSON.stringify({"status": 200, "error": null, "response": status}));
   }
