@@ -73,7 +73,7 @@ module.exports = app => {
 // API USER
   app.post('/api/user', userController.listUser)  // LOGIN USER
   app.post('/api/user', userController.tambahUser)
-  app.put('/api/user', userController.ubahUser)
+  app.put('/api/user/:id', userController.ubahUser)
   app.delete('/api/user/:id', userController.hapusUser)
 
 // API ADMIN
