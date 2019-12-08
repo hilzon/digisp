@@ -1,3 +1,3 @@
 module.exports = {
-    JWT_SECRET: 'babahomeauthentication'
+    JWT_SECRET: 'babaauth'
 };

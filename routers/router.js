@@ -10,7 +10,7 @@ const kontakController = require('../controllers/kontakController');
 const userController = require('../controllers/userController');
 const adminController = require('../controllers/adminController');
 // const middleware = require('../middlewares/middleware');
-const verifyToken = require('../middlewares/auth');
+// const verifyToken = require('../middlewares/auth');
 
 module.exports = app => {
   //API Slider
@@ -62,33 +62,34 @@ module.exports = app => {
   app.delete('/api/kontak/:id', kontakController.hapusKontak)
 
 
-
 // API ADMIN
-app.get('/api/admin', adminController.listAdmin)
-app.post('/api/admin', adminController.tambahAdmin)
-app.put('/api/admin/:id', adminController.ubahAdmin)
-app.delete('/api/admin/:id', adminController.hapusAdmin)
+// app.get('/api/admin', verifyToken.verifyToken, adminController.listAdmin)
+// app.post('/api/admin', adminController.tambahAdmin)
+// app.put('/api/admin/:id', verifyToken.verifyToken, adminController.ubahAdmin)
+// app.delete('/api/admin/:id', adminController.hapusAdmin)
 
 // API USER
-app.get('/api/user', userController.listUser)
-app.post('/api/user', userController.tambahUser)
-app.put('/api/user/:id', userController.ubahUser)
-app.delete('/api/user/:id', userController.hapusUser)
+  app.post('/api/user', userController.listUser)
+  app.post('/api/user', userController.tambahUser)
+  app.put('/api/user', userController.ubahUser)
+  app.delete('/api/user/:id', userController.hapusUser)
 
+  app.put('/api/user/:id', userController.listUser)
 
-// // API adminlogin
-//   app.post('/api/register', middleware.postRegister)
-//   app.get('/api/login', middleware.postLogin)
-//   app.post('/api/login', middleware.postLogin)
+// API admin
+  app.post('/api/admin', adminController.listAdmin)
+  app.post('/api/admin', adminController.tambahAdmin)
+  app.put('/api/admin', adminController.ubahAdmin)
+
+// //API adminLogin
+// app.post('/api/register', middleware.postRegister)
+// app.get('/api/admin', adminController.listAdmin)
+   app.put('/api/admin/:id', adminController.listAdmin) 
+
 };
  
 
 
-
-  // //API userlogin
-  // app.post('/api/register', middleware.postRegister)
-  // app.get('/api/userlogin', middleware.postLogin)
-  // app.post('/api/userlogin', middleware.postLogin)
 
 
 

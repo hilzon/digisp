@@ -1,4 +1,4 @@
-const Joi = require('joi');
+const joi = require('joi');
 
 module.exports = {
     validateBody: (schema) => {
@@ -15,9 +15,9 @@ module.exports = {
     },
 
     schemas: {
-        userSchemas: Joi.object().keys({
-            username: Joi.string().alphanum().min(3).max(30).required(),
-            password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/),
+        userSchemas: joi.object().keys({
+            username: joi.string().alphanum().min(3).max(30).required(),
+            password: joi.string().regex(/^[a-zA-Z0-9]{3,30}$/),
             // nama: Joi.string().nama_user(),
             // hp: Joi.number().hp_user(),
             // alamat: Joi.string().alamat_user(),

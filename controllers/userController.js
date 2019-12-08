@@ -1,6 +1,53 @@
 const User = require('../models/user') 
-
 const joi = require('joi');
+const JWT = require('jsonwebtoken');
+const { JWT_SECRET } = require('../configuration');
+const bcrypt = require('bcryptjs');
+
+signToken = user => {
+    return JWT.sign({
+      iss: 'babahome',
+      sub: user.id,
+      iat: new Date().getTime(), // current time
+      exp: new Date().setDate(new Date().getDate() + 1) // 
+    }, JWT_SECRET)
+  }
+  
+  // module.exports = {
+  //   signup: async (req, res, next) => {
+  //     console.log('userController.signup() called!');
+  
+  //     const { email_user, password_user } = req.value.body;
+
+  //     // Check if there is user with same email
+  //     const foundUser = await User.findOne({ email_user });
+  //     if (foundUser) { 
+  //       return res.status(403).send({ error: 'Email is already in use'})
+  //   }
+  
+  //     // Create a new user
+  //     const newUser = new User({ email_user, password_user });
+  //     await newUser.save();
+      
+  //     // Generate the token
+  //     const token = signToken(newUser);
+  
+  //     // Respond with token
+  //     res.status(200).json({ token });
+  //   },
+  
+  //   signIn: async (req, res) => {
+  //     // Generate token
+  //     const token = signToken(req.user);
+  //     res.status(200).json({ token });
+  //   },
+  
+  //   secret: async (req, res) => {
+  //     console.log('IN');
+  //     res.json({ secret: "resource" });
+  //   }
+  // }
+
 
 exports.validate_user = (req, res, next) => {
   let schema = joi.object().keys({
@@ -25,9 +72,6 @@ exports.validate_user = (req, res, next) => {
 };
 
 
-
-
-
 exports.getRegister = (req, res) => {
   let message = '';
   res.render('register', {message: message});
@@ -42,7 +86,7 @@ exports.postRegister = async (req, res) => {
 
   res.json({
     'status': 200,
-    'message': `${email.username} has been registered`
+    'message': `${email_user.nama_user} has been registered`
   });
 };
 
@@ -52,10 +96,10 @@ exports.getLogin = (req, res) => {
 };
 
 exports.postLogin = async (req, res) => {
-  let {email, password} = req.body;
+  let {email_user, password_user} = req.body;
 
   await User.findOne({
-    email: email
+    email_user: email_user
   }, (err, doc) => {
     if (err) {
       res.status(500)
@@ -75,7 +119,7 @@ exports.postLogin = async (req, res) => {
       let check = bcrypt.compare(password_user, doc.password);
       if (check) {
         jwt.sign({
-          email: doc.email
+          email_user: doc.email_user
           // nama_admin: doc.nama_admin
         }, 'secretkey', (err, token) => {
           res.json({
@@ -96,14 +140,33 @@ exports.postLogin = async (req, res) => {
 
 // USER
 exports.listUser = async (req, res) => {
-    const data = await User.find()
-      res.send(JSON.stringify({"status": 200, "response": data}));
+    const data = await User.findOne({ email_user : req.body.email_user})
+    if (data == null) {
+      res.status(404)
+      res.json({
+        'status': 404,
+        'message': 'User not found',
+      })
+    } else {
+      let check = bcrypt.compare(req.body.password_user, data.password_user)
+      if (check) {
+        res.send(JSON.stringify({"status": 200, "response": data}))
+      } else{
+        res.status(404)
+      res.json({
+        'status': 404,
+        'message': 'Password not right',
+      })
+      }
+    }
   }
   
   exports.tambahUser = async (req, res) => {
     if (req.files) {
         let pic = req.files.image_user
         let path = `./public/image/user/${pic.name}`
+        const salt = bcrypt.genSaltSync(10)
+        const pw = await bcrypt.hash("babastudio", salt)
         pic.mv(path, async (error) => {
           if (error) {
             console.log('err')
@@ -111,7 +174,7 @@ exports.listUser = async (req, res) => {
             const userData = {
               nama_user: req.body.nama_user,
               email_user: req.body.email_user,
-              password_user: req.body.password_user,
+              password_user: pw,
               hp_user: req.body.hp_user,
               alamat_user: req.body.alamat_user,
               tagihan_user: req.body.tagihan_user,
@@ -132,7 +195,7 @@ exports.listUser = async (req, res) => {
   } 
   
   exports.ubahUser = async (req, res) => {
-    const { id } = req.params
+    const { email_user } = req.params
     if(req.files){
       let pic = req.files.image_user
       let path = `./public/image/user/${ pic.name }`
@@ -140,21 +203,21 @@ exports.listUser = async (req, res) => {
       pic.mv(path, async (err) => {
         if (!err){
           req.body.image_user = pic.name
-          const status = await User.update({_id: id}, req.body)
+          const status = await User.update({_id: email_user}, req.body)
           res.send(JSON.stringify({"status": 200, "error": null, "response": status}));
         } else{
           console.log(err)
         }
       })
     } else{
-      const status = await User.update({_id: id}, req.body)
+      const status = await User.update({_id: email_user}, req.body)
           res.send(JSON.stringify({"status": 200, "error": null, "response": status}));
     }
   }
 
   
   exports.hapusUser = async (req,res) => {
-    const { id } = req.params;
+    const { email_user } = req.params;
     if(req.files){
       let pic = req.files.image_user
       let path = `./public/image/user/${ pic.name }`
@@ -162,17 +225,17 @@ exports.listUser = async (req, res) => {
       pic.mv(path, async (err) => {
         if (!err){
           req.body.image_user = pic.name
-          const status = await User.remove({_id: id}, req.body)
+          const status = await User.remove({_id: email_user}, req.body)
           res.send(JSON.stringify({"status": 200, "error": null, "response": status}));
         } else{
           console.log(err)
         }
       })
     } else{
-      const status = await User.remove({_id: id}, req.body)
+      const status = await User.remove({_id: email_user}, req.body)
           res.send(JSON.stringify({"status": 200, "error": null, "response": status}));
     }
 
-    const status = await User.remove({_id: id});
+    const status = await User.remove({_id: email_user});
         res.send(JSON.stringify({"status": 200, "error": null, "response": status}));
   }

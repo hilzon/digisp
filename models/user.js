@@ -25,6 +25,9 @@ const userSchema = Schema ({
     }
 }, {timestamps: true});
 
+module.exports = mongoose.model('users', userSchema);
+
+
 // userSchema.pre('save', async function(next) {
 //     try {
 //         //Generate a salt
@@ -53,9 +56,9 @@ const userSchema = Schema ({
 // }
 
 
-// Create a model
-const User = mongoose.model('users', userSchema);
+// // Create a model
+// const User = mongoose.model('users', userSchema);
 
-// Export the model
-module.exports = User;
+// // Export the model
+// module.exports = User;
 
