@@ -144,7 +144,7 @@ exports.listAdmin = async (req, res) => {
   } 
   
   exports.ubahAdmin = async (req, res) => {
-    const { email_admin } = req.params
+    const { id } = req.params
     if(req.files){
       let pic = req.files.foto_admin
       let path = `./public/image/admin/${ pic.name }`
@@ -152,14 +152,14 @@ exports.listAdmin = async (req, res) => {
       pic.mv(path, async (err) => {
         if (!err){
           req.body.foto_admin = pic.name
-          const status = await Admin.update({_id: email_admin}, req.body)
+          const status = await Admin.update({_id: id}, req.body)
           res.send(JSON.stringify({"status": 200, "error": null, "response": status}));
         } else{
           console.log(err)
         }
       })
     } else{
-      const status = await Admin.update({_id: email_admin}, req.body)
+      const status = await Admin.update({_id: id}, req.body)
           res.send(JSON.stringify({"status": 200, "error": null, "response": status}));
     }
   }
