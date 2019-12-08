@@ -68,23 +68,27 @@ module.exports = app => {
 // app.put('/api/admin/:id', verifyToken.verifyToken, adminController.ubahAdmin)
 // app.delete('/api/admin/:id', adminController.hapusAdmin)
 
+
+
 // API USER
-  app.post('/api/user', userController.listUser)
+  app.post('/api/user', userController.listUser)  // LOGIN USER
   app.post('/api/user', userController.tambahUser)
   app.put('/api/user', userController.ubahUser)
   app.delete('/api/user/:id', userController.hapusUser)
 
-  app.put('/api/user/:id', userController.listUser)
-
-// API admin
-  app.post('/api/admin', adminController.listAdmin)
-  app.post('/api/admin', adminController.tambahAdmin)
+// API ADMIN
+  app.post('/api/admin', adminController.listAdmin) // LOGIN ADMIN
   app.put('/api/admin', adminController.ubahAdmin)
+  
+
+
+
+
 
 // //API adminLogin
 // app.post('/api/register', middleware.postRegister)
 // app.get('/api/admin', adminController.listAdmin)
-   app.put('/api/admin/:id', adminController.listAdmin) 
+   
 
 };
  
