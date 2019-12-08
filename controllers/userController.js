@@ -1,17 +1,17 @@
 const User = require('../models/user') 
 const joi = require('joi');
-const JWT = require('jsonwebtoken');
-const { JWT_SECRET } = require('../configuration');
+// const JWT = require('jsonwebtoken');
+// const { JWT_SECRET } = require('../configuration');
 const bcrypt = require('bcryptjs');
 
-signToken = user => {
-    return JWT.sign({
-      iss: 'babahome',
-      sub: user.id,
-      iat: new Date().getTime(), // current time
-      exp: new Date().setDate(new Date().getDate() + 1) // 
-    }, JWT_SECRET)
-  }
+// signToken = user => {
+//     return JWT.sign({
+//       iss: 'babahome',
+//       sub: user.id,
+//       iat: new Date().getTime(), // current time
+//       exp: new Date().setDate(new Date().getDate() + 1) // 
+//     }, JWT_SECRET)
+//   }
   
   // module.exports = {
   //   signup: async (req, res, next) => {
@@ -140,81 +140,76 @@ exports.postLogin = async (req, res) => {
 
 // USER
 exports.listUser = async (req, res) => {
-    const data = await User.findOne({ email_user : req.body.email_user})
-    if (data == null) {
+  const data = await User.findOne({ email_user : req.body.email_user})
+  if (data == null) {
+    res.status(404)
+    res.json({
+      'status': 404,
+      'message': 'User not found',
+    })
+  } else {
+    let check = bcrypt.compare(req.body.password_user, data.password_user)
+    if (check) {
+      res.send(JSON.stringify({"status": 200, "response": data}))
+    } else{
       res.status(404)
-      res.json({
-        'status': 404,
-        'message': 'User not found',
-      })
-    } else {
-      let check = bcrypt.compare(req.body.password_user, data.password_user)
-      if (check) {
-        res.send(JSON.stringify({"status": 200, "response": data}))
-      } else{
-        res.status(404)
-      res.json({
-        'status': 404,
-        'message': 'Password not right',
-      })
-      }
+    res.json({
+      'status': 404,
+      'message': 'Password no right',
+    })
     }
   }
-  
-  exports.tambahUser = async (req, res) => {
-    if (req.files) {
-        let pic = req.files.image_user
-        let path = `./public/image/user/${pic.name}`
-        const salt = bcrypt.genSaltSync(10)
-        const pw = await bcrypt.hash("babastudio", salt)
-        pic.mv(path, async (error) => {
-          if (error) {
-            console.log('err')
-          } else {
-            const userData = {
-              nama_user: req.body.nama_user,
-              email_user: req.body.email_user,
-              password_user: pw,
-              hp_user: req.body.hp_user,
-              alamat_user: req.body.alamat_user,
-              tagihan_user: req.body.tagihan_user,
-              image_user: pic.name,
-              status_user: {
-                  type: Boolean,
-                  default: true
-              }
-            }
-            const user = new User(userData);
-            const status = await user.save();
-            res.send(JSON.stringify({"status": 200, "error": null, "response": status}));
-          }
-        })
-    } else {
-        res.sendStatus(403)
-    }
-  } 
-  
-  exports.ubahUser = async (req, res) => {
-    const { email_user } = req.params
-    if(req.files){
-      let pic = req.files.image_user
-      let path = `./public/image/user/${ pic.name }`
+}
 
-      pic.mv(path, async (err) => {
-        if (!err){
-          req.body.image_user = pic.name
-          const status = await User.update({_id: email_user}, req.body)
+exports.tambahUser = async (req, res) => {
+  if (req.files) {
+      let pic = req.files.image_user
+      let path = `./public/image/user/${pic.name}`
+      const salt = bcrypt.genSaltSync(10)
+      const pw = await bcrypt.hash("studio", salt)
+      pic.mv(path, async (error) => {
+        if (error) {
+          console.log('err')
+        } else {
+          const userData = {
+            nama_user: req.body.nama_user,
+            email_user: req.body.email_user,
+            password_user: pw,
+            alamat_user: req.body.nama_user,
+            tagihan_user: req.body.tagihan_user,
+            image_user: pic.name,
+            status_user: req.body.status_user
+          }
+          const user = new User(userData);
+          const status = await user.save();
           res.send(JSON.stringify({"status": 200, "error": null, "response": status}));
-        } else{
-          console.log(err)
         }
       })
-    } else{
-      const status = await User.update({_id: email_user}, req.body)
-          res.send(JSON.stringify({"status": 200, "error": null, "response": status}));
-    }
+  } else {
+      res.sendStatus(403)
   }
+} 
 
+exports.ubahUser = async (req, res) => {
+  const { email_user } = req.params
+  if(req.files){
+    let pic = req.files.image_user
+    let path = `./public/image/user/${ pic.name }`
+
+    pic.mv(path, async (err) => {
+      if (!err){
+        req.body.image_user = pic.name
+        const status = await User.update({_id: email_user}, req.body)
+        res.send(JSON.stringify({"status": 200, "error": null, "response": status}));
+      } else{
+        console.log(err)
+      }
+    })
+  } else{
+    const status = await User.update({_id: email_user}, req.body)
+        res.send(JSON.stringify({"status": 200, "error": null, "response": status}));
+  }
+}
   
   exports.hapusUser = async (req,res) => {
     const { email_user } = req.params;
