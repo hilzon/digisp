@@ -9,8 +9,8 @@ const newsController = require('../controllers/newsController');
 const kontakController = require('../controllers/kontakController');
 const userController = require('../controllers/userController');
 const adminController = require('../controllers/adminController');
-const chatingController = require('../models/chatingController');
-const chatingDetailController = require('../models/chatingDetailController')
+const chatingController = require('../controllers/chatingController');
+const chatingDetailController = require('../controllers/chatingDetailController');
 // const middleware = require('../middlewares/middleware');
 // const verifyToken = require('../middlewares/auth');
 
@@ -85,18 +85,16 @@ module.exports = app => {
 
 
 //API Chating
-app.get('/api/chating', chatingController.listchating)
-app.post('/api/chating', chatingController.tambahchating)
-app.put('/api/chating/:id', chatingController.ubahchating)
-app.delete('/api/chating/:id', chatingController.hapuschating)
+// app.post('/api/chating', chatingController.listchating)
+// app.post('/api/chating', chatingController.tambahchating)
+// app.put('/api/chating/:id', chatingController.ubahchating)
+// app.delete('/api/chating/:id', chatingController.hapuschating)
 
 //API ChatingDetail
-app.get('/api/chatingDetail', chatingDetailController.listchatingDetail)
-app.post('/api/chatingDetail', chatingDetailController.tambahchatingDetail)
-app.put('/api/chatingDetail/:id', chatingDetailController.ubahchatingDetail)
-app.delete('/api/chatingDetail/:id', chatingDetailController.hapuschatingDetail)
-
-
+// app.get('/api/chatingDetail', chatingDetailController.listchatingDetail)
+// app.post('/api/chatingDetail', chatingDetailController.tambahchatingDetail)
+// app.put('/api/chatingDetail/:id', chatingDetailController.ubahchatingDetail)
+// app.delete('/api/chatingDetail/:id', chatingDetailController.hapuschatingDetail)
 
 
 };

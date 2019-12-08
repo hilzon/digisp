@@ -7,4 +7,4 @@ const chatingDetailSchema = Schema ({
     message: String
 }, {timestamps: true});
 
-module.exports = mongoose.model('chatingdetails', chatingDetailSchema);
+module.exports = mongoose.model('chatingDetails', chatingDetailSchema);
