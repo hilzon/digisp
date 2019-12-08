@@ -78,7 +78,7 @@ module.exports = app => {
 
 // API ADMIN
   app.post('/api/admin', adminController.listAdmin) // LOGIN ADMIN
-  app.put('/api/admin', adminController.ubahAdmin)
+  app.put('/api/admin/:id', adminController.ubahAdmin)
   
 
 
