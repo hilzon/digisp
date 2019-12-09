@@ -3,7 +3,7 @@ const Chating = require('../models/chating');
 // KONTAK
 
 exports.listChating = async (req, res) => {
-  const data = await Fasilitas.find()
+    const data = await Fasilitas.find()
     res.send(JSON.stringify({"status": 200, "response": data}));
 }
 
