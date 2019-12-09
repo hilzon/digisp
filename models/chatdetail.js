@@ -1,10 +1,10 @@
 const mongoose = require ('mongoose');
 const Schema = mongoose.Schema;
 
-const chatingdetailSchema = Schema ({
+const chatdetailSchema = Schema ({
     id_chating: Object,
     sender: String,
     message: String
 }, {timestamps: true});
 
-module.exports = mongoose.model('chatingdetails', chatingdetailSchema);
+module.exports = mongoose.model('chatdetails', chatdetailSchema);

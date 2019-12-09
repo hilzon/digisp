@@ -10,7 +10,7 @@ const kontakController = require('../controllers/kontakController');
 const userController = require('../controllers/userController');
 const adminController = require('../controllers/adminController');
 const chatingController = require('../controllers/chatingController');
-const chatingdetailController = require('../controllers/chatingdetailController');
+const chatdetailController = require('../controllers/chatdetailController');
 // const middleware = require('../middlewares/middleware');
 // const verifyToken = require('../middlewares/auth');
 
@@ -91,10 +91,10 @@ app.put('/api/chating/:id', chatingController.ubahChating)
 app.delete('/api/chating/:id', chatingController.hapusChating)
 
 //API ChatingDetail
-app.get('/api/chatingdetail', chatingdetailController.listChatingdetail)
-app.post('/api/chatingdetail', chatingdetailController.tambahChatingdetail)
-app.put('/api/chatingdetail/:id', chatingdetailController.ubahChatingdetail)
-app.delete('/api/chatingdetail/:id', chatingdetailController.hapusChatingdetail)
+app.get('/api/chatdetail', chatdetailController.listChatdetail)
+app.post('/api/chatdetail', chatdetailController.tambahChatdetail)
+app.put('/api/chatdetail/:id', chatdetailController.ubahChatdetail)
+app.delete('/api/chatdetail/:id', chatdetailController.hapusChatdetail)
 
 
 };
