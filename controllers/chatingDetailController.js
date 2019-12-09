@@ -1,25 +1,25 @@
-const ChatingDetail = require('../models/chatingDetail');
+const Chatingdetail = require('../models/chatingdetail');
 
 // KONTAK
-exports.listChatingDetail = async (req, res) => {
+exports.listChatingdetail = async (req, res) => {
     const data = await ChatingDetail.find()
     res.send(JSON.stringify({"status": 200, "response": data}));
 }
   
-exports.tambahChatingDtail = async (req, res) => {
-    const chatingDetail = new ChatingDetail(req.body);
-    const status = await chatingDetail.save();
+exports.tambahChatingdetail = async (req, res) => {
+    const chatingdetail = new ChatingDetail(req.body);
+    const status = await chatingdetail.save();
     res.send(JSON.stringify({"status": 200, "error": null, "response": status}));
   } 
   
-  exports.ubahChatingDetail = async(req,res) => {
+  exports.ubahChatingdetail = async(req,res) => {
     const { id } = req.params;
-    const status = await ChatingDetail.update({_id: id}, req.body);
+    const status = await Chatingdetail.update({_id: id}, req.body);
     res.send(JSON.stringify({"status": 200, "error": null, "response": status}));
   }
   
-  exports.hapusChatingDetail = async(req,res) => {
+  exports.hapusChatingdetail = async(req,res) => {
     let { id } = req.params;
-    const status = await ChatingDetail.remove({_id: id});
+    const status = await Chatingdetail.remove({_id: id});
     res.send(JSON.stringify({"status": 200, "error": null, "response": status}));
   }

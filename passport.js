@@ -28,7 +28,7 @@ passport.use(new JWTStrategy({
 //Local STRATEGY
 passport.use(new LocalStrategy({
     usernameField: 'email_user'
-}, async (email, password, done) => {
+}, async (email_user, password, done) => {
     try {
         // Find the user given the email
     const user = await User.findOne({ email_user });
