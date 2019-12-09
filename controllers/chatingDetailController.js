@@ -1,13 +1,14 @@
 const Chatingdetail = require('../models/chatingdetail');
 
 // KONTAK
+
 exports.listChatingdetail = async (req, res) => {
-    const data = await ChatingDetail.find()
+    const data = await Chatingdetail.find()
     res.send(JSON.stringify({"status": 200, "response": data}));
 }
   
 exports.tambahChatingdetail = async (req, res) => {
-    const chatingdetail = new ChatingDetail(req.body);
+    const chatingdetail = new Chatingdetail(req.body);
     const status = await chatingdetail.save();
     res.send(JSON.stringify({"status": 200, "error": null, "response": status}));
   } 
