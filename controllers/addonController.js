@@ -9,6 +9,11 @@ const path = require('path')
       res.send(JSON.stringify({"status": 200, "response": data}));
   }
   
+exports.listFilteraddon = async (req, res) => {
+  const data = await Addon.find({id_kategori: req.query.kategori})
+  res.send(JSON.stringify({"status": 200, "response": data}));
+}
+
   exports.tambahAddon = async (req, res) => {
     if (req.files) {
         let pic = req.files.image_addon

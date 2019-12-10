@@ -11,6 +11,7 @@ const userController = require('../controllers/userController');
 const adminController = require('../controllers/adminController');
 const chatingController = require('../controllers/chatingController');
 const chatdetailController = require('../controllers/chatdetailController');
+// const filteraddonController = require('../controllers/filteraddonController');
 // const middleware = require('../middlewares/middleware');
 // const verifyToken = require('../middlewares/auth');
 
@@ -96,6 +97,8 @@ app.post('/api/chatdetail', chatdetailController.tambahChatdetail)
 app.put('/api/chatdetail/:id', chatdetailController.ubahChatdetail)
 app.delete('/api/chatdetail/:id', chatdetailController.hapusChatdetail)
 
+//API Filteraddon
+app.get('/api/filteraddon', addonController.listFilteraddon)
 
 };
  

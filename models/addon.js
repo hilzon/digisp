@@ -10,7 +10,7 @@ const addonSchema = Schema({
         type: Boolean,
         default: true
     },
-    id_kategori: Object
+    id_kategori: Schema.Types.ObjectId
 }, {timestamp:true});
 
 module.exports = mongoose.model('addons', addonSchema);
