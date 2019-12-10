@@ -2,7 +2,7 @@ const mongoose = require ('mongoose');
 const Schema = mongoose.Schema;
 
 const chatdetailSchema = Schema ({
-    id_chating: Object,
+    id_chating: Schema.Types.ObjectId,
     sender: String,
     message: String
 }, {timestamps: true});
