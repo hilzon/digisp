@@ -11,8 +11,8 @@ const userController = require('../controllers/userController');
 const adminController = require('../controllers/adminController');
 const chatingController = require('../controllers/chatingController');
 const chatdetailController = require('../controllers/chatdetailController');
-// const middleware = require('../middlewares/middleware');
-// const verifyToken = require('../middlewares/auth');
+const middleware = require('../middlewares/middleware');
+const verifyToken = require('../middlewares/middleware');
 
 module.exports = app => {
   //API Slider
@@ -64,16 +64,20 @@ module.exports = app => {
   app.delete('/api/kontak/:id', kontakController.hapusKontak)
 
 
-// API ADMIN
+// API ADMIN token
 // app.get('/api/admin', verifyToken.verifyToken, adminController.listAdmin)
 // app.post('/api/admin', adminController.tambahAdmin)
 // app.put('/api/admin/:id', verifyToken.verifyToken, adminController.ubahAdmin)
 // app.delete('/api/admin/:id', adminController.hapusAdmin)
 
-
+// API USER token
+// app.post('/api/user', verifyToken.verifyToken, userController.listUser)  // LOGIN USER
+// app.post('/api/user', verifyToken.verifyToken, userController.tambahUser)
+// app.put('/api/user/:id', verifyToken.verifyToken, userController.ubahUser)
+// app.delete('/api/user/:id', verifyToken.verifyToken, userController.hapusUser)
 
 // API USER
-  app.post('/api/user', userController.listUser)  // LOGIN USER
+  app.get('/api/user/:id', userController.listUser)  // LOGIN USER
   app.post('/api/user', userController.tambahUser)
   app.put('/api/user/:id', userController.ubahUser)
   app.delete('/api/user/:id', userController.hapusUser)

@@ -1,7 +1,7 @@
 const User = require('../models/user') 
 const joi = require('joi');
-// const JWT = require('jsonwebtoken');
-// const { JWT_SECRET } = require('../configuration');
+const JWT = require('jsonwebtoken');
+const { JWT_SECRET } = require('../configuration');
 const bcrypt = require('bcryptjs');
 
 // signToken = user => {
@@ -13,40 +13,40 @@ const bcrypt = require('bcryptjs');
 //     }, JWT_SECRET)
 //   }
   
-  // module.exports = {
-  //   signup: async (req, res, next) => {
-  //     console.log('userController.signup() called!');
+//   module.exports = {
+//     signup: async (req, res, next) => {
+//       console.log('userController.signup() called!');
   
-  //     const { email_user, password_user } = req.value.body;
+//       const { email_user, password_user } = req.value.body;
 
-  //     // Check if there is user with same email
-  //     const foundUser = await User.findOne({ email_user });
-  //     if (foundUser) { 
-  //       return res.status(403).send({ error: 'Email is already in use'})
-  //   }
+//       // Check if there is user with same email
+//       const foundUser = await User.findOne({ email_user });
+//       if (foundUser) { 
+//         return res.status(403).send({ error: 'Email is already in use'})
+//     }
   
-  //     // Create a new user
-  //     const newUser = new User({ email_user, password_user });
-  //     await newUser.save();
+//       // Create a new user
+//       const newUser = new User({ email_user, password_user });
+//       await newUser.save();
       
-  //     // Generate the token
-  //     const token = signToken(newUser);
+//       // Generate the token
+//       const token = signToken(newUser);
   
-  //     // Respond with token
-  //     res.status(200).json({ token });
-  //   },
+//       // Respond with token
+//       res.status(200).json({ token });
+//     },
   
-  //   signIn: async (req, res) => {
-  //     // Generate token
-  //     const token = signToken(req.user);
-  //     res.status(200).json({ token });
-  //   },
+//     signIn: async (req, res) => {
+//       // Generate token
+//       const token = signToken(req.user);
+//       res.status(200).json({ token });
+//     },
   
-  //   secret: async (req, res) => {
-  //     console.log('IN');
-  //     res.json({ secret: "resource" });
-  //   }
-  // }
+//     secret: async (req, res) => {
+//       console.log('IN');
+//       res.json({ secret: "resource" });
+//     }
+//   }
 
 
 exports.validate_user = (req, res, next) => {
@@ -140,7 +140,8 @@ exports.postLogin = async (req, res) => {
 
 // USER
 exports.listUser = async (req, res) => {
-  const data = await User.findOne({ email_user : req.body.email_user})
+  let { id } = req.params;
+  const data = await User.findOne({ _id : id})
   if (data == null) {
     res.status(404)
     res.json({
