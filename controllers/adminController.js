@@ -1,5 +1,6 @@
 const Admin = require('../models/admin')
-// const jwt = require('jsonwebtoken');
+const JWT = require('jsonwebtoken');
+const { JWT_SECRET } = require('../configuration');
 const bcrypt = require('bcryptjs');
 const joi = require('joi');
 
@@ -43,60 +44,61 @@ exports.validate_admin = (req, res, next) => {
 //   });
 // };
 
-// exports.getLogin = (req, res) => {
-//   let message = '';
-//   res.render('Login', {message: message});
-// };
+exports.getLogin = (req, res) => {
+  let message = '';
+  res.render('Login', {message: message});
+};
 
-// exports.postLogin = async (req, res) => {
-//   let {email_admin, password_admin} = req.body;
+exports.postLogin = async (req, res) => {
+  let {email_admin, password_admin} = req.body;
 
-//   await Admin.findOne({
-//     email_admin: email_admin 
-//   }, (err, doc) => {
-//     if (err) {
-//       res.status(500)
-//       res.json({
-//         'status': 500,
-//         'message': err,
-//       })
-//     }
+  await Admin.findOne({
+    email_admin: email_admin 
+  }, (err, doc) => {
+    if (err) {
+      res.status(500)
+      res.json({
+        'status': 500,
+        'message': err,
+      })
+    }
 
-//     if (doc == null) {
-//       res.status(404)
-//       res.json({
-//         'status': 404,
-//         'message': 'User not found',
-//       })
-//     } else {
-//       let check = bcrypt.compare(password_admin, doc.password);
-//       if (check) {
-//         jwt.sign({
-//           email_admin: doc.email_admin
-//           // nama_admin: doc.nama_admin
-//         }, 'secretkey', (err, token) => {
-//           res.json({
-//             token
-//           })
-//         })
-//       } else {
-//         res.status(400)
-//         res.json({
-//           'status': 400,
-//           'message': 'Wrong password',
-//         })
-//       }
-//     }
-//   }).lean()
+    if (doc == null) {
+      res.status(404)
+      res.json({
+        'status': 404,
+        'message': 'User not found',
+      })
+    } else {
+      let check = bcrypt.compare(password_admin, doc.password);
+      if (check) {
+        JWT.sign({
+          email_admin: doc.email_admin
+          // nama_admin: doc.nama_admin
+        }, JWT_SECRET, (err, token) => {
+          res.json({
+            token
+          })
+        })
+      } else {
+        res.status(400)
+        res.json({
+          'status': 400,
+          'message': 'Wrong password',
+        })
+      }
+    }
+  }).lean()
   
-// };
+};
 
 
 
 
  // ADMIN
 exports.listAdmin = async (req, res) => {
-    const data = await Admin.findOne({ email_admin : req.body.email_admin})
+    let { id } = req.params;
+    const data = await Admin.findOne({ _id : id })
     if (data == null) {
       res.status(404)
       res.json({
@@ -165,26 +167,26 @@ exports.listAdmin = async (req, res) => {
   }
 
   
-  // exports.hapusAdmin = async (req,res) => {
-  //   const { email_admin } = req.params;
-  //   if(req.files){
-  //     let pic = req.files.foto_admin
-  //     let path = `./public/image/admin/${ pic.name }`
+  exports.hapusAdmin = async (req,res) => {
+    const { id } = req.params;
+    if(req.files){
+      let pic = req.files.foto_admin
+      let path = `./public/image/admin/${ pic.name }`
 
-  //     pic.mv(path, async (err) => {
-  //       if (!err){
-  //         req.body.foto_admin = pic.name
-  //         const status = await Admin.remove({_id: email_admin}, req.body)
-  //         res.send(JSON.stringify({"status": 200, "error": null, "response": status}));
-  //       } else{
-  //         console.log(err)
-  //       }
-  //     })
-  //   } else{
-  //     const status = await Admin.remove({_id: email_admin}, req.body)
-  //         res.send(JSON.stringify({"status": 200, "error": null, "response": status}));
-  //   }
+      pic.mv(path, async (err) => {
+        if (!err){
+          req.body.foto_admin = pic.name
+          const status = await Admin.remove({_id: id}, req.body)
+          res.send(JSON.stringify({"status": 200, "error": null, "response": status}));
+        } else{
+          console.log(err)
+        }
+      })
+    } else{
+      const status = await Admin.remove({_id: id}, req.body)
+          res.send(JSON.stringify({"status": 200, "error": null, "response": status}));
+    }
 
-  //   const status = await Admin.remove({_id: email_admin});
-  //       res.send(JSON.stringify({"status": 200, "error": null, "response": status}));
-  // }
+    const status = await Admin.remove({_id: id});
+        res.send(JSON.stringify({"status": 200, "error": null, "response": status}));
+  }

@@ -1,3 +1,3 @@
 module.exports = {
-    JWT_SECRET: 'baba'
+    JWT_SECRET: 'babastudio'
 };

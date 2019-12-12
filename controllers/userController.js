@@ -118,10 +118,10 @@ exports.postLogin = async (req, res) => {
     } else {
       let check = bcrypt.compare(password_user, doc.password);
       if (check) {
-        jwt.sign({
+        JWT.sign({
           email_user: doc.email_user
           // nama_admin: doc.nama_admin
-        }, 'secretkey', (err, token) => {
+        }, JWT_SECRET, (err, token) => {
           res.json({
             token
           })
@@ -161,6 +161,28 @@ exports.listUser = async (req, res) => {
     }
   }
 }
+
+// exports.listUser = async (req, res) => {
+//   const data = await User.findOne({ _id : email_user})
+//   if (data == null) {
+//     res.status(404)
+//     res.json({
+//       'status': 404,
+//       'message': 'User not found',
+//     })
+//   } else {
+//     let check = bcrypt.compare(req.body.password_user, data.password_user)
+//     if (check) {
+//       res.send(JSON.stringify({"status": 200, "response": data}))
+//     } else{
+//       res.status(404)
+//     res.json({
+//       'status': 404,
+//       'message': 'Password no right',
+//     })
+//     }
+//   }
+// }
 
 exports.tambahUser = async (req, res) => {
   if (req.files) {
